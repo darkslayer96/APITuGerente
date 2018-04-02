@@ -22,7 +22,6 @@ $router->get('/', function () use ($router) {
 $router->post('/pagos/newpago', function(Request $request) use ($router){
 	$pago = new Pago();
 	$pago->cod = $request->input('cod');
-	$pago->fechap = $request->input('fechap');
 	$pago->pack = $request->pack;
 	$pago->mont = $request->input('mont');
 	$pago->ci = $request->input('ci');
@@ -39,7 +38,7 @@ $router->post('/pagos/newpago', function(Request $request) use ($router){
 });
 //Read
 $router->get('/pagos/{cod}', function($cod) use ($router){
-	$pago = Pago::where('cod',$cod)->get()->first();
+	$pago = Pago::select('cod','estado','pack','ci','mont')->where('cod',$cod)->get()->first();
 	//$pago->estado = $request->estado;
 
 
@@ -53,8 +52,8 @@ $router->get('/pagos/{cod}', function($cod) use ($router){
 //Update
 $router->post('/pagos/edit/{cod}', function(Request $request,$cod) use ($router){
 	$pago = Pago::where('cod',$cod)->get()->first();
-	$pago->estado = $request->estado;
-
+	$pago->estado = true;
+	$pago->fechap = date('Y-m-d H:i:s');
 	$pago->update();
 	return response()->json("Actualizacion exitosa");
 	//if($pago->update()){
