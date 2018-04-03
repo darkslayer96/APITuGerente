@@ -18,7 +18,12 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-//Create
+
+//$router->get('/key', function () use ($router) {
+  //  return str_random(32);
+//});
+
+$router->group(['middleware' => ['auth']],function () use($router){
 $router->post('/pagos/newpago', function(Request $request) use ($router){
 	$pago = new Pago();
 	$pago->cod = $request->input('cod');
@@ -26,6 +31,7 @@ $router->post('/pagos/newpago', function(Request $request) use ($router){
 	$pago->mont = $request->input('mont');
 	$pago->ci = $request->input('ci');
 	$pago->estado = false;
+	$pago->api_token = '8fAEhkfVYMQV3IffrlHgo5iimywo2qK8';
 
 	if($pago->save()){
 		return response()->json($pago);
@@ -62,4 +68,9 @@ $router->post('/pagos/edit/{cod}', function(Request $request,$cod) use ($router)
 	//		return response()->json("error");
 	//}
 });
+});
+
+//Create
+
 //Delete
+
